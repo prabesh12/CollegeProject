@@ -5,7 +5,7 @@ const Card = (props) => {
   return (
     <>
       <Container>
-        <Image src={props.image} alt="image" />
+      <Image src={props.image} alt="image" />
         <h3>{props.brand}</h3>
         <p>{props.name}</p>
         <p>{props.price}</p>

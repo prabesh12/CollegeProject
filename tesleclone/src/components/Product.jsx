@@ -1,28 +1,27 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import ProductList from './ProductList';
 import Card from './Card';
 import styled from "styled-components";
 import Header from './Header';
-
-function integrateCard(product){
-   
-    return <Card 
-    key={product.id}
-    image={product.image}
-    brand={product.brand}
-    name ={product.name}
-    link={`/product/${product.id}`}
-    />
-}
+import {Outlet } from "react-router-dom";
 const Product = () => {
   return (
     <>
     <Header />
     <Container>
     <ItemContainer>
-     { ProductList.map(integrateCard)}
+     { ProductList.map((product)=>{
+       return <Card 
+       key={product.id}
+       image={product.image}
+       brand={product.brand}
+       name ={product.name}
+       link={`/product/${product.id}`}
+       />
+     })}
      </ItemContainer>
      </Container>
+     <Outlet/>
     </>
   )
 }

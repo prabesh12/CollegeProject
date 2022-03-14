@@ -1,47 +1,59 @@
-import React from "react";
+import { React, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router";
 import StickyHeadTable from "./Table";
-import ProductList from './ProductList';
+import ProductList from "./ProductList";
 import { Button } from "@material-ui/core";
 
 const Product = () => {
+  const [product, setProduct] = useState();
   const { id } = useParams();
-     
-    if(id === ProductList.id)
-    
-    { 
-      console.log(id);
-
-      const getData = ProductList[id-1];
-      console.log(getData);
+  useEffect(() => {
+    let isMounted = true;
+    if (isMounted) {
+      filterProduct();
     }
+    return () => (isMounted = false);
+  }, []);
+  function filterProduct() {
+    let p = ProductList.filter((p) => {
+      return p.id.toString() === id;
+    })[0];
+    setProduct(p);
+  }
   return (
     <>
-      {ProductList.map((item) => {
-        return (
-          <Container>
-            <ProductContainer key={item.id}>
-              <ImgandDes>
-                <ProductImage src={item.image} alt="" />
-                <ProductDes>{item.description}</ProductDes>
-              </ImgandDes>
-              <Info>
-                <Brand>{item.brand}</Brand>
-                <h2>{item.name}</h2>
-                <Price>
-                  <strong>Price:</strong> {item.price}
-                </Price>
-                <p>
-                  <strong>Color:</strong> {item.color}
-                </p>
-                <Button style={{backgroundColor:"", Color:"#fffff", margin: "10px 0px"}} variant="contained">Buy Now</Button>
-              </Info>
-            </ProductContainer>
-            <hr />
-          </Container>
-        );
-      })}
+      {product && (
+        <Container>
+          <ProductContainer>
+            <ImgandDes>
+              <ProductImage src={product.image} alt="image" />
+              <ProductDes>{product.detail}</ProductDes>
+            </ImgandDes>
+            <Info>
+              <Brand>{product.brand}</Brand>
+              <h2>{product.name}</h2>
+              <Price>
+                <strong>Price:</strong> {product.price}
+              </Price>
+              <p>
+                <strong>Color:</strong>
+              </p>
+              <Button
+                style={{
+                  backgroundColor: "",
+                  Color: "#fffff",
+                  margin: "10px 0px",
+                }}
+                variant="contained"
+              >
+                Buy Now
+              </Button>
+            </Info>
+          </ProductContainer>
+        </Container>
+      )}
+
       <Container>
         <StickyHeadTable />
       </Container>
@@ -81,12 +93,13 @@ const ProductImage = styled.img`
   -webkit-box-shadow: 1px 3px 14px -6px rgba(120, 120, 120, 1);
   -moz-box-shadow: 1px 3px 14px -6px rgba(120, 120, 120, 1);
 `;
+
 const Info = styled.div`
-  height: 70%;
+  height: 50%;
   display: flex;
   flex-direction: column;
   // grid-template-rows: repeat(4,auto);
-  margin-top: 20px;
+  margin-top: 120px;
   align-items: center;
   justify-content: center;
   border-radius: 10px;
@@ -100,7 +113,7 @@ const Brand = styled.h1`
 `;
 const Price = styled.p`
   margin: 20px 0;
-  font-weight:600;
+  font-weight: 600;
 `;
 
 export default Product;
